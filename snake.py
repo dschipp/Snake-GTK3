@@ -186,6 +186,7 @@ class win(Gtk.Window):
         if self.timeout_on:
             GLib.source_remove(self.timeout_id)
         self.init_timeout()
+        self.direc = random.randint(0,3)
 
 """initilize the array with snake with a head"""
 def init_snake():
