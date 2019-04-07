@@ -1,9 +1,12 @@
+#!/usr/bin/env python3
+# snake.py
+
 import gi, random
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GLib, Gdk
 
 field_size = 25
-win_size = 400
+win_size = 800
 speed = 100
 init_parts = 3
 
@@ -11,14 +14,14 @@ class objects:
     x_coord = random.randint(0,  field_size-1)
     y_coord = random.randint(0, field_size-1)
 
-    def set_x_y(self,x,y):
+    def set_x_y(self,x: int,y: int):
         self.x_coord = x
         self.y_coord = y
 
-    def get_x(self):
+    def get_x(self) -> int:
         return self.x_coord
     
-    def get_y(self):
+    def get_y(self) -> int:
         return self.y_coord
     
     def rand_coord(self):
@@ -43,7 +46,7 @@ def add_snake():
         2 for left
         3 for right
         """
-def move(direction): 
+def move(direction: int): 
     if direction == 0:
         #up
         snake[len(snake)-1].set_x_y(snake[0].get_x(),snake[0].get_y()-1)
@@ -80,7 +83,7 @@ def eat():
                 fruit.rand_coord()
 
 """ckecks if the the snakes head is on the snake"""
-def game_over():
+def game_over() -> bool:
     for i in snake[1:]:
         if i.get_x() == snake[0].get_x() and i.get_y() == snake[0].get_y() and len(snake) > init_parts:
             return True
@@ -143,7 +146,7 @@ class win(Gtk.Window):
         cr.stroke()
 
     # the timeout funktion that repeats every few seconds
-    def on_timeout(self, *args, **kwargs):
+    def on_timeout(self, *args, **kwargs) -> bool:
         if game_over():
             self.timeout_on = False
             return False
@@ -186,9 +189,9 @@ class win(Gtk.Window):
         if self.timeout_on:
             GLib.source_remove(self.timeout_id)
         self.init_timeout()
-        self.direc = random.randint(0,3)
+	#self.direc = random.randint(0,3)
 
-"""initilize the array with snake with a head"""
+"""initilize the array of snake pats"""
 def init_snake():
     snake_part = snake_obj()
     snake_part.rand_coord()
@@ -196,12 +199,9 @@ def init_snake():
     while len(snake) < init_parts:
         add_snake()
 
-snake = [] #init a snake as an array
-fruit = fruit()
-
-def main():
+if __name__ == "__main__":
+    snake = [] #init a snake as an array
+    fruit = fruit()
     init_snake()
     app = win()
     Gtk.main()
-
-main()
